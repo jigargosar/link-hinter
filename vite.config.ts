@@ -1,7 +1,12 @@
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
-import basicSsl from '@vitejs/plugin-basic-ssl'
+import webExtension from 'vite-plugin-web-extension'
 
 export default defineConfig({
-    plugins: [tailwindcss(), basicSsl()],
+    plugins: [
+        tailwindcss(),
+        webExtension({
+            manifest: 'src/manifest.json',
+        }),
+    ],
 })

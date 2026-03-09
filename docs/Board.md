@@ -12,7 +12,9 @@
 
 ## InProgress
 
-- src/entrypoints/content.ts — hint mode state machine, key capture, click action
+- src/entrypoints/content.ts — see docs/plan-content-file.md
+  - Shadow DOM container (F-OVR-02)
+  - State machine (idle / active / filtering)
 
 ## Done
 

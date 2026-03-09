@@ -9,12 +9,12 @@
 - src/entrypoints/labeler.ts — prefix-free hint label generation
 - src/entrypoints/scanner.ts — detect interactive elements in viewport
 - src/entrypoints/HintOverlay.tsx — positioned hint label component
+  - Labeler + keystroke capture + click action (self-contained)
 
 ## InProgress
 
 - src/entrypoints/content.tsx — see docs/plan-content-file.md
-  - Labeler + keystroke capture + click action (self-contained)
-
+- wxt- what is entry point
 ## Done
 
 - wxt.config.ts — WXT framework config with React + Tailwind

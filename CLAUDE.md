@@ -43,5 +43,5 @@ Spec at `docs/spec.md`. Task board at `docs/Board.md`.
 - Content script handles: element scanning, hint rendering, keystroke capture, click simulation
 - Background service worker (future): tab creation for Shift+hint new-tab action
 - Options page (future): settings UI bound to `chrome.storage.sync`
-- Manifest changes require full extension reload in `chrome://extensions` (no HMR)
+- All changes (including content scripts) require: reload extension at `chrome://extensions` + refresh page (F5)
 - Chrome does not support SVG icons in manifest — use PNG

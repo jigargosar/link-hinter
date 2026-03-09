@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="16" fill="#fafafa"/>
+  <path d="M36 20 L16 20 L16 108 L36 108" fill="none" stroke="#171717" stroke-width="8" stroke-linecap="square"/>
+  <path d="M92 20 L112 20 L112 108 L92 108" fill="none" stroke="#171717" stroke-width="8" stroke-linecap="square"/>
+  <text x="64" y="78" font-family="'Courier New', monospace" font-weight="900" font-size="52" text-anchor="middle" fill="#171717">lh</text>
+</svg>

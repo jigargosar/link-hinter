@@ -26,9 +26,22 @@ Content script is the core — injected into pages, renders hint overlays inside
 
 Spec at `docs/spec.md`. Task board at `docs/Board.md`.
 
+## Versioning
+
+- `src/manifest.json` and `package.json` versions must always be in sync
+- Increment patch version on every manifest change (Chrome caches by version)
+
+## Icons
+
+- Source SVGs in `docs/spikes/icons/` (numbered variants for exploration)
+- Production PNGs generated via `node scripts/generate-icons.mjs` (uses sharp)
+- PNGs live in `public/icons/` (Vite copies to dist automatically)
+
 ## Chrome Extension Notes
 
 - All hint DOM lives in Shadow DOM to isolate from page CSS
 - Content script handles: element scanning, hint rendering, keystroke capture, click simulation
 - Background service worker (future): tab creation for Shift+hint new-tab action
 - Options page (future): settings UI bound to `chrome.storage.sync`
+- Manifest changes require full extension reload in `chrome://extensions` (no HMR)
+- Chrome does not support SVG icons in manifest — use PNG

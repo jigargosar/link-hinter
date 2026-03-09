@@ -44,4 +44,5 @@ Spec at `docs/spec.md`. Task board at `docs/Board.md`.
 
 - Content script handles: element scanning, hint rendering, keystroke capture, click simulation
 - Dev workflow: save file → WXT auto-reloads extension → refresh page (F5)
+- Load `.output/chrome-mv3-dev/` as unpacked extension in `chrome://extensions` during dev
 - Chrome does not support SVG icons in manifest — use PNG

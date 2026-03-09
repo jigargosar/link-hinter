@@ -18,6 +18,8 @@ Thumbs.db
 # Node/pnpm (default)
 node_modules
 dist
+.output
+.wxt
 .parcel-cache
 *.tsbuildinfo
 

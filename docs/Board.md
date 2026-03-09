@@ -6,17 +6,18 @@
 
 ## Ready
 
-- src/labeler.ts — prefix-free hint label generation
-- src/scanner.ts — detect interactive elements in viewport
-- src/HintOverlay.tsx — positioned hint label component
-- src/main.tsx — entry, Shadow DOM, key capture, state machine, click
+- src/entrypoints/labeler.ts — prefix-free hint label generation
+- src/entrypoints/scanner.ts — detect interactive elements in viewport
+- src/entrypoints/HintOverlay.tsx — positioned hint label component
 
 ## InProgress
 
-- src/manifest.json — Manifest V3 config
-- vite.config.ts — add vite-plugin-web-extension
+- src/entrypoints/content.ts — hint mode state machine, key capture, click action
 
 ## Done
+
+- wxt.config.ts — WXT framework config with React + Tailwind
+- Extension icons — PNG generation from SVG source
 
 ## Backlog
 

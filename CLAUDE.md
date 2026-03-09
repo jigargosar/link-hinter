@@ -8,40 +8,40 @@ Link Hinter is a Chrome extension (Manifest V3) for keyboard-driven navigation. 
 
 ## Commands
 
-- `pnpm dev` — start Vite dev server
-- `pnpm build` — production build
+- `pnpm dev` — start WXT dev server (auto-reloads content scripts on save, refresh page to see changes)
+- `pnpm build` — production build (output: `.output/chrome-mv3/`)
 - `pnpm typecheck` — run TypeScript type checking (`tsc --noEmit`)
 
 ## Tech Stack
 
-- TypeScript (strict), React 19, Tailwind CSS v4, Vite
-- `vite-plugin-web-extension` — Chrome extension bundling
+- TypeScript (strict), React 19, Tailwind CSS v4, Vite (via WXT)
+- `wxt` — Chrome extension framework with auto-reload dev server
 - `tabbable` — interactive element detection
 - `rbush` — spatial index for bounding-rect overlap detection (layer system)
-- `@types/chrome` — Chrome extension API types
 
 ## Architecture
 
-Content script is the core — injected into pages, renders hint overlays inside Shadow DOM. Flat `src/` structure (no nested folders until features warrant them).
+WXT file-based entrypoints in `src/entrypoints/`. Manifest auto-generated from `wxt.config.ts`. Config in `wxt.config.ts`.
+
+- `src/entrypoints/content.ts` — content script (hint mode)
+- `src/entrypoints/background.ts` — service worker (future)
+- `src/entrypoints/options/` — options page (future)
 
 Spec at `docs/spec.md`. Task board at `docs/Board.md`.
 
 ## Versioning
 
-- `src/manifest.json` and `package.json` versions must always be in sync
-- Increment patch version on every manifest change (Chrome caches by version)
+- Version lives in `package.json` — WXT reads it automatically for manifest
+- No separate manifest version to maintain
 
 ## Icons
 
 - Source SVGs in `docs/spikes/icons/` (numbered variants for exploration)
 - Production PNGs generated via `node scripts/generate-icons.mjs` (uses sharp)
-- PNGs live in `public/icons/` (Vite copies to dist automatically)
+- PNGs live in `public/icons/` (WXT copies to output automatically)
 
 ## Chrome Extension Notes
 
-- All hint DOM lives in Shadow DOM to isolate from page CSS
 - Content script handles: element scanning, hint rendering, keystroke capture, click simulation
-- Background service worker (future): tab creation for Shift+hint new-tab action
-- Options page (future): settings UI bound to `chrome.storage.sync`
-- All changes (including content scripts) require: reload extension at `chrome://extensions` + refresh page (F5)
+- Dev workflow: save file → WXT auto-reloads extension → refresh page (F5)
 - Chrome does not support SVG icons in manifest — use PNG

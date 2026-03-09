@@ -1,0 +1,130 @@
+Let me look at the actual WXT docs to give you concrete answers.OK, let me break this down concretely — what WXT actually *requires* you to do, and what it *does for you*.
+
+---
+
+## The Core Problem WXT Solves
+
+A browser extension is not a normal web app. It has **multiple isolated pieces** that run in different contexts:
+
+1. **Background script** — runs silently, no DOM, handles events
+2. **Content script** — injected into web pages the user visits
+3. **Popup** — the UI that opens when you click the extension icon
+4. **Options page** — extension settings page
+5. **manifest.json** — the "contract" file the browser reads to understand all of the above
+
+Without WXT, you write `manifest.json` by hand and wire everything up yourself. WXT automates that.
+
+---
+
+## What You Concretely Must Do
+
+### 1. The `entrypoints/` folder is the only thing WXT watches
+
+WXT expects entry points to be placed in a folder named `entrypoints/` within your project structure, and automatically updates `manifest.json` based on specific naming conventions for entry point files.
+
+The file name is what matters. Concretely:
+
+| File you create | What browser gets |
+|---|---|
+| `entrypoints/background.ts` | Background service worker |
+| `entrypoints/content.ts` | Content script (injected into pages) |
+| `entrypoints/popup/index.html` | The popup when you click the icon |
+| `entrypoints/options/index.html` | Extension settings page |
+
+You don't register these anywhere. The filename = the manifest entry.
+
+---
+
+### 2. Each entrypoint file must export a `define*` function
+
+This is non-negotiable. The file must have a default export using WXT's helper. For a background script:
+
+```ts
+// entrypoints/background.ts
+export default defineBackground({
+  main() {
+    // your code here — MUST be sync, not async
+    browser.runtime.onInstalled.addListener(() => {
+      console.log('installed');
+    });
+  }
+});
+```
+
+For a content script — you **must** declare `matches` (which URLs to inject into):
+
+```ts
+// entrypoints/content.ts
+export default defineContentScript({
+  matches: ['*://*.google.com/*'],  // REQUIRED
+  main() {
+    console.log('running on google');
+  }
+});
+```
+
+Without `matches`, WXT doesn't know where to inject it and won't build correctly.
+
+---
+
+### 3. `wxt.config.ts` is where permissions live
+
+There is no `manifest.json` file in the source code. Instead, WXT generates the manifest from multiple sources — and permissions you need (like `tabs`, `scripting`) must be declared manually in `wxt.config.ts`.
+
+```ts
+// wxt.config.ts
+import { defineConfig } from 'wxt';
+
+export default defineConfig({
+  manifest: {
+    permissions: ['tabs', 'storage', 'scripting'],
+    host_permissions: ['*://*.example.com/*'],
+  }
+});
+```
+
+If your code calls `browser.tabs.*` and you didn't put `'tabs'` here, the browser will block it at runtime with no clear error.
+
+---
+
+### 4. The `browser.*` API is how you call everything
+
+WXT provides a layer of abstraction over the raw extension APIs — you use `browser.*` instead of `chrome.*`, and WXT handles cross-browser compatibility underneath.
+
+```ts
+// Works in Chrome AND Firefox — don't use chrome.* directly
+const tabs = await browser.tabs.query({ active: true, currentWindow: true });
+```
+
+---
+
+### 5. The output is in `.output/`, never edit it
+
+WXT generates `manifest.json` at `.output/{browser}-{mv}-{mode}/manifest.json`. There is no source `manifest.json` file. Everything in `.output/` is auto-generated — you load *that folder* into `chrome://extensions` during dev.
+
+---
+
+## The Two Commands You Actually Use Day-to-Day
+
+```bash
+wxt dev      # starts dev server, watches files, hot-reloads
+wxt build    # builds final output into .output/
+```
+
+During `wxt dev`, you go to `chrome://extensions` → "Load unpacked" → point to `.output/chrome-mv3-dev/`. After that, changes auto-reload.
+
+---
+
+## Summary of What WXT Requires From You
+
+1. **Files in `entrypoints/`** with the right names
+2. **Default export using `define*` helpers** (`defineBackground`, `defineContentScript`, etc.)
+3. **`matches` array** in every content script
+4. **Permissions declared** in `wxt.config.ts`
+5. **Use `browser.*`** not `chrome.*`
+
+Everything else — manifest generation, bundling, HMR, MV2/MV3 differences — WXT handles automatically.
+
+---
+
+Want me to go deeper on any one of these five? For example, how messaging works between the popup and content script, or how the popup UI is wired up with React?

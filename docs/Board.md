@@ -12,14 +12,14 @@
 
 ## InProgress
 
-- src/entrypoints/content.ts — see docs/plan-content-file.md
-  - Shadow DOM container (F-OVR-02)
-  - State machine (idle / active / filtering)
+- src/entrypoints/content.tsx — see docs/plan-content-file.md
+  - Labeler + keystroke capture + click action (self-contained)
 
 ## Done
 
 - wxt.config.ts — WXT framework config with React + Tailwind
 - Extension icons — PNG generation from SVG source
+- Shadow DOM container (F-OVR-02) — React + WXT createShadowRootUi in content.tsx
 
 ## Backlog
 

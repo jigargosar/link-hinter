@@ -2,7 +2,7 @@
 
 ## Unblocked
 
-1. Shadow DOM container (F-OVR-02)
+1. [done] Shadow DOM container (F-OVR-02)
 2. State machine (idle / active / filtering)
 3. Keystroke filtering — narrow hints as user types (F-OVR-05, F-SEL-01)
 4. Shift detection for new-tab action (F-SEL-03)
